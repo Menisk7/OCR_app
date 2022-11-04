@@ -71,8 +71,19 @@ public class MainActivity extends AppCompatActivity {
     int rotationposition=1;
 
     //switch for btnright btnleft
-    public int nextrotation(int number) {
-        switch (number) {
+    public int nextrotation(String direction) {
+
+            if (direction.equals("right")) {
+                --rotationposition;
+            }else{
+                ++rotationposition;
+            }
+            if(rotationposition<1)
+                rotationposition=4;
+            if(rotationposition>4)
+                rotationposition=1;
+
+            switch (rotationposition) {
             //0 degree
             case 1: return 0;
             //270 degree
@@ -137,25 +148,21 @@ public class MainActivity extends AppCompatActivity {
 
         //btnleft listener
         btnleft.setOnClickListener(v -> {
-            ++rotationposition;
-            if(rotationposition>4)
-                rotationposition=1;
-            rotation=nextrotation(rotationposition);
+            rotation=nextrotation("left");
             img.setRotation(rotation);
         });
 
         //btnright listener
         btnright.setOnClickListener(v -> {
-            --rotationposition;
-            if(rotationposition<1)
-                rotationposition=4;
-            rotation=nextrotation(rotationposition);
+            rotation=nextrotation("right");
             img.setRotation(rotation);
         });
 
         //pickimage btn listener
         pickimage.setOnClickListener(v -> mGetContent.launch("image/*"));
     }
+
+
     //Activity Launcher so user can pick image
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
